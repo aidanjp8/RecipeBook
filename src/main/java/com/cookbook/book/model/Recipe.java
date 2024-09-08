@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,8 +14,6 @@ public class Recipe {
 
     @Column(length = 1000)
     private String instructions;
-
-    //other fields
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
