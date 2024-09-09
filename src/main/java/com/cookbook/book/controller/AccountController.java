@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//git test
 @RestController
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;
+    private AccountService getAccountService() {
+        return accountService;
+    }
 
 
     @PostMapping("/createaccount")
