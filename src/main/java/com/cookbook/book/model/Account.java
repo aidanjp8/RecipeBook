@@ -1,8 +1,6 @@
 package com.cookbook.book.model;
 
-
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -21,6 +19,8 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Recipe> recipes;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Folder> folders;
 
     public Account() {
     }
@@ -55,5 +55,13 @@ public class Account {
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
+    }
+
+    public List<Folder> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(List<Folder> folders) {
+        this.folders = folders;
     }
 }

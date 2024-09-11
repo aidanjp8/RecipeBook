@@ -4,10 +4,10 @@ import com.cookbook.book.model.Account;
 import com.cookbook.book.model.Recipe;
 import com.cookbook.book.repository.AccountRepository;
 import com.cookbook.book.repository.RecipeRepository;
-import com.cookbook.book.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -19,24 +19,32 @@ public class RecipeServiceImpl implements RecipeService {
     private RecipeRepository recipeRepository;
 
     @Override
-    @Transactional
-    public Account addRecipeToAccount(int accountId, Recipe recipe) {
-        // Find the account by ID
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Set the account for the recipe
+    public Recipe addRecipeToAccount(int accountId, Recipe recipe) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
         recipe.setAccount(account);
+        return recipeRepository.save(recipe);
+    }
 
-        // Save the recipe
-        recipeRepository.save(recipe);
+    @Override
+    public List<Recipe> getRecipesByAccountId(int accountId) {
+        return recipeRepository.findByAccountId(accountId);
+    }
 
-        // Add the recipe to the account's list of recipes
-        account.getRecipes().add(recipe);
+    @Override
+    public Recipe getRecipeById(Long id) {
+        return recipeRepository.findById(id).orElse(null);
+    }
 
-        // Save the updated account
-        accountRepository.save(account);
+    @Override
+    public void updateRecipe(Long id, Recipe recipe) {
+        if (recipeRepository.existsById(id)) {
+            recipe.setId(id);
+            recipeRepository.save(recipe);
+        }
+    }
 
-        return account;
+    @Override
+    public void deleteRecipe(Long id) {
+        recipeRepository.deleteById(id);
     }
 }
